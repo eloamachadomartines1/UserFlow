@@ -8,4 +8,8 @@ class UsuarioModelForm(forms.ModelForm):
         fields = ['nome', 'cpf', 'idade', 'sexo']
         # todos os campos que queremos que pegue
 
-        
+    def clean_cpf(self):
+        cpf = self.cleaned_data.get('cpf')
+        if not cpf.isdigit():
+            raise forms.ValidationError('O CPF deve ter exatamente 11 números.')
+        return cpf
