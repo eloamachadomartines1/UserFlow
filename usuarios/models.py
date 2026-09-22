@@ -15,7 +15,6 @@ class Usuario(models.Model):
     idade = models.IntegerField(null=True, blank=True)
     sexo = models.CharField(max_length=1, choices=SEXO_CHOICES)
 
-    criado_em = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return self.nome

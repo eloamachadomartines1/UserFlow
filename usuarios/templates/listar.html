@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Lista de Usuários</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 40px;
+        }
+
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        th,
+        td {
+            border: 1px solid #ccc;
+            padding: 8px 12px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        a.btn {
+            text-decoration: none;
+            padding: 6px 12px;
+            border-radius: 4px;
+            margin-right: 5px;
+        }
+
+        a.novo {
+            background-color: #0096c7;
+            color: white;
+        }
+
+        a.editar {
+            background-color: #ffc107;
+            color: black;
+        }
+
+        a.excluir {
+            background-color: #dc3545;
+            color: white;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Usuários cadastrados</h1>
+
+    <p><a href="{% url 'criar_usuario' %}" class="btn novo">+ Novo usuário</a></p>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Nome</th>
+                <th>CPF</th>
+                <th>Idade</th>
+                <th>Sexo</th>
+                <th>Ações</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for usuario in usuarios %}
+            <tr>
+                <td>{{ usuario.nome }}</td>
+                <td>{{ usuario.cpf }}</td>
+                <td>{{ usuario.idade|default:"-" }}</td>
+                <td>{{ usuario.get_sexo_display }}</td>
+                <td>
+                    <a href="{% url 'editar_usuario' usuario.pk %}" class="btn editar">Editar</a>
+                    <a href="{% url 'excluir_usuario' usuario.pk %}" class="btn excluir">Excluir</a>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                # <td colspan="5">Nenhum usuário cadastrado.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+
+</html>
