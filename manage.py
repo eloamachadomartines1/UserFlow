@@ -22,35 +22,3 @@ if __name__ == '__main__':
     main()
 
 
-
-
-
-# Ou seja, só passa se for exatamente 11 números, nem mais, nem menos, sem letras ou símbolos.
-
-# 2. No forms.py — validação customizada (opcional, mas recomendado)
-
-# O validator do model já funciona, mas fazer a validação também no form garante uma mensagem de erro mais clara antes de tentar salvar no banco:
-
-# python
-# from django import forms
-# from .models import Usuario
-
-# class UsuarioForm(forms.ModelForm):
-    # class Meta:
-        # model = Usuario
-        # fields = ['nome', 'cpf', 'idade', 'sexo']
-
-    # def clean_cpf(self):
-        # cpf = self.cleaned_data.get('cpf')
-        # if not cpf.isdigit():
-            # raise forms.ValidationError('O CPF deve conter apenas números.')
-        # if len(cpf) != 11:
-            # raise forms.ValidationError('O CPF deve ter exatamente 11 números.')
-        # return cpf
-# 3. Gerar e aplicar a migration
-
-# Como alteramos o models.py (adicionamos o validators), precisa gerar uma nova migration:
-
-# bash
-# python manage.py makemigrations
-# python manage.py migrate
