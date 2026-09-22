@@ -2,6 +2,7 @@ from django.db import models
 from django.core.validators import RegexValidator
 
 class Usuario(models.Model):
+    # para o usuario selecionar as opções
     SEXO_CHOICES = [
         ('M', 'Masculino'),
         ('F', 'Feminino'),
