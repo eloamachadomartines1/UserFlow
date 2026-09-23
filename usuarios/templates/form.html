@@ -50,13 +50,13 @@
 <body>
     <h1>{% if form.instance.pk %}Editar{% else %}Novo{% endif %} Usuário</h1>
 
-    <form method="post">
+   <form method="post" enctype="multipart/form-data">
         {% csrf_token %}
 
         {% for field in form %}
         <div class="form-group">
             <label for="{{ field.id_for_label }}">{{ field.label }}</label>
-            <form method="post" enctype="multipart/form-data"></form>
+           
             {{ field }}
             {% if field.errors %}
             <div class="erro">{{ field.errors }}</div>
