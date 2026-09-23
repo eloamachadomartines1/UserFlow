@@ -26,7 +26,7 @@ def criar_usuario(request):
 def editar_usuario(request, pk):
     usuario = get_object_or_404(Usuario, pk=pk)
     if request.method == 'POST':
-        form = UsuarioModelForm(request.POST, instance=usuario)
+        form = UsuarioModelForm(request.POST, request.FILES, instance=usuario)
 
         if form.is_valid():
             form.save()

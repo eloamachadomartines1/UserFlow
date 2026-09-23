@@ -73,6 +73,13 @@
                 <td>{{ usuario.idade|default:"-" }}</td>
                 <td>{{ usuario.get_sexo_display }}</td>
                 <td>
+                    {% if usuario.foto %}
+                    <img src="{{ usuario.foto.url }}" width="50">
+                    {% else %}
+                         -
+                    {% endif %}
+                </td>
+                <td>
                     <a href="{% url 'editar_usuario' usuario.pk %}" class="btn editar">Editar</a>
                     <a href="{% url 'excluir_usuario' usuario.pk %}" class="btn excluir">Excluir</a>
                 </td>

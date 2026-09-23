@@ -18,7 +18,7 @@ class Usuario(models.Model):
     cpf = models.CharField(max_length=11, unique=True, validators=[cpf_validator])
     idade = models.IntegerField(blank=True, null=True)
     sexo = models.CharField(max_length=1, choices=SEXO_CHOICES)
-    photo = models.ImageField(upload_to='usuarios', blank=True, null=True)
+    foto = models.ImageField(upload_to='usuario/', blank=True, null=True)
 
     def __str__(self):
         return self.nome
