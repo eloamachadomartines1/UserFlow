@@ -13,11 +13,12 @@ class Usuario(models.Model):
         regex=r'^\d{11}$',
         message='CPF deve conter exatamente 11 números, sem pontos ou traços.'
     )
-
+    id = models.AutoField(primary_key=True)
     nome = models.CharField(max_length=100)
     cpf = models.CharField(max_length=11, unique=True, validators=[cpf_validator])
     idade = models.IntegerField(blank=True, null=True)
     sexo = models.CharField(max_length=1, choices=SEXO_CHOICES)
+    photo = models.ImageField(upload_to='usuarios', blank=True, null=True)
 
     def __str__(self):
         return self.nome

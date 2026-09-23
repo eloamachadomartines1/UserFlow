@@ -11,7 +11,7 @@ def listar_usuarios(request):
 
 def criar_usuario(request):
     if request.method == 'POST':
-        form = UsuarioModelForm(request.POST)
+        form = UsuarioModelForm(request.POST, request.FILES)
 
         if form.is_valid():
             form.save()
