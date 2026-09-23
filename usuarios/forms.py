@@ -13,5 +13,5 @@ class UsuarioModelForm(forms.ModelForm):
         if not cpf.isdigit():
              raise forms.ValidationError('O CPF deve conter apenas números.')
         if len(cpf) != 11:
-             raise forms.ValidationError('O CPF deve ter exatamente 11 números.')
+             raise forms.ValidationError('O CPF deve conter pelo menos 11 números.')
         return cpf
