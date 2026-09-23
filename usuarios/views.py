@@ -1,4 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib.auth.decorators import login_required
 from usuarios.models import Usuario
 from usuarios.forms import UsuarioModelForm
 # Create your views here.
@@ -8,7 +9,7 @@ def listar_usuarios(request):
     return render(request, 'listar.html', {'usuarios' : usuarios} )
 
 
-
+@login_required
 def criar_usuario(request):
     if request.method == 'POST':
         form = UsuarioModelForm(request.POST, request.FILES)
@@ -23,6 +24,7 @@ def criar_usuario(request):
     return render(request, 'form.html', {'form': form})  
 
 
+@login_required
 def editar_usuario(request, pk):
     usuario = get_object_or_404(Usuario, pk=pk)
     if request.method == 'POST':
@@ -37,6 +39,7 @@ def editar_usuario(request, pk):
     return render( request, 'form.html', { 'form': form})
 
 
+@login_required
 def excluir_usuario(request, pk):
     usuario = get_object_or_404(Usuario, pk=pk)
 

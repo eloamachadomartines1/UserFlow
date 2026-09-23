@@ -53,40 +53,50 @@
 <body>
     <h1>Usuários cadastrados</h1>
 
+    {% if user.is_authenticated %}
+    <p>Olá, {{ user.username }}! <a href="{% url 'logout' %}">Sair</a></p>
     <p><a href="{% url 'criar_usuario' %}" class="btn novo">+ Novo usuário</a></p>
+    {% else %}
+    <p><a href="{% url 'login' %}">Fazer login</a> para editar ou excluir usuários</p>
+    {% endif %}
 
     <table>
         <thead>
             <tr>
+                <th>Foto</th>
                 <th>Nome</th>
                 <th>CPF</th>
                 <th>Idade</th>
                 <th>Sexo</th>
+                {% if user.is_authenticated %}
                 <th>Foto</th>
+                {% endif %}
             </tr>
         </thead>
         <tbody>
             {% for usuario in usuarios %}
             <tr>
+                <td>
+                    {% if usuario.foto %}
+                     <img src="{{ usuario.foto.url }}" class="avatar">
+                    {% else %}
+                     <div class="avatar avatar-vazio">?</div>
+                    {% endif %}
+                </td>
                 <td>{{ usuario.nome }}</td>
                 <td>{{ usuario.cpf }}</td>
                 <td>{{ usuario.idade|default:"-" }}</td>
                 <td>{{ usuario.get_sexo_display }}</td>
-                <td>
-                    {% if usuario.foto %}
-                    <img src="{{ usuario.foto.url }}" width="50">
-                    {% else %}
-                         -
-                    {% endif %}
-                </td>
+                {% if user.is_authenticated %}
                 <td>
                     <a href="{% url 'editar_usuario' usuario.pk %}" class="btn editar">Editar</a>
                     <a href="{% url 'excluir_usuario' usuario.pk %}" class="btn excluir">Excluir</a>
                 </td>
+                {% endif %}
             </tr>
             {% empty %}
             <tr>
-                # <td colspan="5">Nenhum usuário cadastrado.</td>
+                <td colspan="6">Nenhum usuário cadastrado.</td>
             </tr>
             {% endfor %}
         </tbody>

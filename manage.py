@@ -24,79 +24,79 @@ if __name__ == '__main__':
 
 
 
+    # Building a login-protected content management system.
+# Building a login-protected content management system.
+# Boa, vamos implementar isso usando o sistema de autenticação nativo do Django (é o mais simples e seguro pra isso).
 
-
-# 1. Atualizar o models.py
+# 1. usuarios/urls.py  adicionar rotas de login/logout
 # python
-# from django.db import models
-# from django.core.validators import RegexValidator
-
-# class Usuario(models.Model):
-    # SEXO_CHOICES = [
-        # ('M', 'Masculino'),
-        # ('F', 'Feminino'),
-        # ('O', 'Outro'),
-    # ]
-
-    # cpf_validator = RegexValidator(
-        # regex=r'^\d{11}$',
-        # message='CPF deve conter exatamente 11 números, sem pontos ou traços.'
-    # )
-
-    # nome = models.CharField(max_length=100)
-    # cpf = models.CharField(max_length=11, unique=True, validators=[cpf_validator])
-    # idade = models.IntegerField(blank=True, null=True)
-    # sexo = models.CharField(max_length=1, choices=SEXO_CHOICES)
-    # foto = models.ImageField(upload_to='usuarios/', blank=True, null=True)
-
-    # def __str__(self):
-        # return self.nome
-
-# upload_to='usuarios/' significa que as fotos vão ser salvas em media/usuarios/.
-
-# 2. Instalar o Pillow (obrigatório para ImageField)
-# bash
-# pip install Pillow
-
-# Sem essa biblioteca, o Django nem deixa rodar makemigrations num model com ImageField.
-
-# 3. Configurar MEDIA_URL e MEDIA_ROOT no settings.py do projeto
-
-# Adicione (se ainda não tiver):
-
-# python
-# MEDIA_URL = '/media/'
-# MEDIA_ROOT = BASE_DIR / 'media'
-# 4. Servir os arquivos de mídia no urls.py do projeto
-# python
-# from django.conf import settings
-# from django.conf.urls.static import static
+# from django.urls import path
+# from django.contrib.auth import views as auth_views
+# from . import views
 
 # urlpatterns = [
-    # ... suas rotas existentes
-# ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
-# 5. Atualizar o forms.py
+    # path('', views.listar_usuarios, name='listar_usuarios'),
+    # path('novo/', views.criar_usuario, name='criar_usuario'),
+    # path('editar/<int:pk>/', views.editar_usuario, name='editar_usuario'),
+    # path('excluir/<int:pk>/', views.excluir_usuario, name='excluir_usuario'),
+
+    # path('login/', auth_views.LoginView.as_view(template_name='usuarios/login.html'), name='login'),
+    # path('logout/', auth_views.LogoutView.as_view(next_page='listar_usuarios'), name='logout'),
+# ]
+# Usei as views prontas do Django (LoginView/LogoutView) — elas já cuidam de toda a lógica de autenticação, validação de senha, sessão, etc. Você só precisa do template de login.
+
+# 2. usuarios/templates/usuarios/login.html
+# html
+# <!DOCTYPE html>
+# <html lang="pt-br">
+# <head>
+    # <meta charset="UTF-8">
+    # <title>Login</title>
+    # <style>
+        # body { font-family: Arial, sans-serif; margin: 40px; }
+        # .form-group { margin-bottom: 15px; }
+        # label { display: block; margin-bottom: 5px; font-weight: bold; }
+        # input { padding: 6px; width: 250px; }
+        # button { padding: 8px 16px; background-color: #0096c7; color: white; border: none; border-radius: 4px; cursor: pointer; }
+        # .erro { color: red; }
+    # </style>
+# </head>
+# <body>
+    # <h1>Login</h1>
+
+    # {% if form.errors %}
+        # <p class="erro">Usuário ou senha inválidos.</p>
+    # {% endif %}
+
+    # <form method="post">
+        # {% csrf_token %}
+        # <div class="form-group">
+            # <label for="{{ form.username.id_for_label }}">Usuário</label>
+            # {{ form.username }}
+        # </div>
+        # <div class="form-group">
+            # <label for="{{ form.password.id_for_label }}">Senha</label>
+            # {{ form.password }}
+        # </div>
+        # <button type="submit">Entrar</button>
+    # </form>
+
+    # <p><a href="{% url 'listar_usuarios' %}">&larr; Voltar para a lista</a></p>
+# </body>
+# </html>
+
+# 3. usuarios/views.py — proteger criar, editar e excluir com @login_required
 # python
-# from django import forms
+# from django.shortcuts import render, redirect, get_object_or_404
+# from django.contrib.auth.decorators import login_required
 # from .models import Usuario
+# from .forms import UsuarioForm
 
-# class UsuarioForm(forms.ModelForm):
-    # class Meta:
-        # model = Usuario
-        # fields = ['nome', 'cpf', 'idade', 'sexo', 'foto']
+# def listar_usuarios(request):
+    # usuarios = Usuario.objects.all()
+    # return render(request, 'usuarios/listar.html', {'usuarios': usuarios})
 
-    # def clean_cpf(self):
-        # cpf = self.cleaned_data.get('cpf')
-        # if not cpf.isdigit():
-            # raise forms.ValidationError('O CPF deve conter apenas números.')
-        # if len(cpf) != 11:
-            # raise forms.ValidationError('O CPF deve ter exatamente 11 números.')
-        # return cpf
-# 6. Atualizar o usuarios/views.py
-# 
-# Precisa capturar request.FILES, além de request.POST, nas views de criar e editar:
-
-# python
+# @login_required
 # def criar_usuario(request):
     # if request.method == 'POST':
         # form = UsuarioForm(request.POST, request.FILES)
@@ -107,6 +107,7 @@ if __name__ == '__main__':
         # form = UsuarioForm()
     # return render(request, 'usuarios/form.html', {'form': form})
 
+# @login_required
 # def editar_usuario(request, pk):
     # usuario = get_object_or_404(Usuario, pk=pk)
     # if request.method == 'POST':
@@ -117,96 +118,86 @@ if __name__ == '__main__':
     # else:
         # form = UsuarioForm(instance=usuario)
     # return render(request, 'usuarios/form.html', {'form': form})
-# 7. Atualizar o form.html — adicionar enctype
 
-# Sem isso, o navegador não envia arquivos, só texto:
+# @login_required
+# def excluir_usuario(request, pk):
+    # usuario = get_object_or_404(Usuario, pk=pk)
+    # if request.method == 'POST':
+        # usuario.delete()
+        # return redirect('listar_usuarios')
+    # return render(request, 'usuarios/confirmar_exclusao.html', {'usuario': usuario})
+# @login_required faz o Django checar se o usuário está logado antes de executar a view. Se não estiver, redireciona automaticamente pra tela de login.
 
-# html
-# <form method="post" enctype="multipart/form-data">
-# 8. Atualizar o admin.py
+# 4. Configurar pro Django saber qual é a tela de login (settings.py)
+# Adicione no final do arquivo de settings do projeto:
+
 # python
-# from django.contrib import admin
-# from .models import Usuario
+# LOGIN_URL = 'login'
+# LOGIN_REDIRECT_URL = 'listar_usuarios'
+# LOGIN_URL é pra onde o @login_required redireciona quando alguém não logado tenta acessar uma rota protegida.
 
-# @admin.register(Usuario)
-# class UsuarioAdmin(admin.ModelAdmin):
-    # list_display = ['nome', 'cpf', 'idade', 'sexo']
+# 5. listar.html — esconder os botões de Editar/Excluir/Novo pra quem não está logado
+# html
+# <h1>Usuários cadastrados</h1>
 
-# (Não coloquei foto no list_display porque o admin mostraria só o caminho do arquivo como texto — se quiser, dá pra mostrar como miniatura, mas exige um pouco mais de código. Quer que eu monte isso?)
+# {% if user.is_authenticated %}
+    # <p>Olá, {{ user.username }}! <a href="{% url 'logout' %}">Sair</a></p>
+    # <p><a href="{% url 'criar_usuario' %}" class="btn novo">+ Novo usuário</a></p>
+# {% else %}
+    # <p><a href="{% url 'login' %}">Fazer login</a> para editar ou excluir usuários</p>
+# {% endif %}
 
-# 9. Gerar e aplicar a migration
+# <table>
+    # <thead>
+        # <tr>
+            # <th>Foto</th>
+            # <th>Nome</th>
+            # <th>CPF</th>
+            # <th>Idade</th>
+            # <th>Sexo</th>
+            # {% if user.is_authenticated %}
+                # <th>Ações</th>
+            # {% endif %}
+        # </tr>
+    # </thead>
+    # <tbody>
+        # {% for usuario in usuarios %}
+        # <tr>
+            # <td>
+                # {% if usuario.foto %}
+                    # <img src="{{ usuario.foto.url }}" class="avatar">
+                # {% else %}
+                    # <div class="avatar avatar-vazio">?</div>
+                # {% endif %}
+            # </td>
+            # <td>{{ usuario.nome }}</td>
+            # <td>{{ usuario.cpf }}</td>
+            # <td>{{ usuario.idade|default:"-" }}</td>
+            # <td>{{ usuario.get_sexo_display }}</td>
+            # {% if user.is_authenticated %}
+            # <td>
+                # <a href="{% url 'editar_usuario' usuario.pk %}" class="btn editar">Editar</a>
+                # <a href="{% url 'excluir_usuario' usuario.pk %}" class="btn excluir">Excluir</a>
+            # </td>
+            # {% endif %}
+        # </tr>
+        # {% empty %}
+        # <tr>
+            # <td colspan="6">Nenhum usuário cadastrado.</td>
+        # </tr>
+        # {% endfor %}
+    # </tbody>
+# </table>
+# {% if user.is_authenticated %} funciona automaticamente em qualquer template Django — a variável user já vem disponível em todo request, contanto que django.contrib.auth.middleware.AuthenticationMiddleware esteja no MIDDLEWARE do settings (ele vem por padrão em todo projeto novo).
+
+# 6. Criar um usuário para testar o login
+# Se ainda não tiver um superusuário:
+
 # bash
-# python manage.py makemigrations
-# python manage.py migrate
-# 10. Mostrar a foto na listagem (opcional)
+# python manage.py createsuperuser
+# Use esse login e senha na tela /usuarios/login/.
 
-# Se quiser exibir no listar.html:
-
-# html
-# <td>
-    # {% if usuario.foto %}
-        # <img src="{{ usuario.foto.url }}" width="50">
-    # {% else %}
-        # -
-    # {% endif %}
-# </td>
-
-# Depois de aplicar tudo isso, rode python manage.py runserver e teste criar um usuário com foto. Quer que eu já adicione a miniatura no admin também?
-
-# como assim
-
-# Desculpa, deixei muita coisa de uma vez! Qual parte especificamente ficou confusa? Pode ser:
-
-# O processo todo — muitos passos juntos e você quer que eu explique devagar, um de cada vez
-# Um passo específico — tipo o que é enctype="multipart/form-data", ou por que precisa do Pillow, ou o que é request.FILES
-# Onde colocar cada coisa — tipo não saber exatamente qual arquivo abrir pra colar cada trecho
-
-# Me fala o que travou que eu explico com mais calma.
-
-# "Quer que eu já adicione a miniatura no admin também?"
-
-# Ah, isso! Deixa eu explicar melhor.
-
-# O problema
-
-# No Django Admin (/admin/), se você adicionar foto no list_display, ele não mostra a imagem — mostra só o texto do caminho do arquivo, tipo:
-
-# usuarios/foto123.jpg
-
-# Não dá pra ver a foto de verdade na lista, só o nome do arquivo. Meio inútil visualmente.
-
-# O que eu quis dizer com "miniatura"
-
-# É fazer o admin mostrar uma imagem pequena de verdade (um preview/thumbnail) na coluna, em vez do texto do caminho. Assim, na lista de usuários dentro do /admin/, você vê a carinha da pessoa direto, sem precisar clicar pra abrir o registro.
-
-# Como fica (comparação)
-
-# Sem miniatura (só list_display = ['nome', 'cpf', 'foto']):
-
-# Nome       | CPF         | Foto
-# Eloá       | 12345678901 | usuarios/foto123.jpg
-
-# Com miniatura:
-
-# Nome       | CPF         | Foto
-# Eloá       | 12345678901 | [🖼️ imagem pequena aqui]
-# O código pra fazer isso
-
-# Se você quiser, no usuarios/admin.py:
-
-# python
-# from django.contrib import admin
-# from django.utils.html import format_html
-# from .models import Usuario
-
-# @admin.register(Usuario)
-# class UsuarioAdmin(admin.ModelAdmin):
-    # list_display = ['nome', 'cpf', 'idade', 'sexo', 'mostrar_foto']
-# 
-    # def mostrar_foto(self, obj):
-        # if obj.foto:
-            # return format_html('<img src="{}" width="50" style="border-radius:5px;" />', obj.foto.url)
-        # return "Sem foto"
-    # mostrar_foto.short_description = 'Foto'
-
-# Isso cria um "campo virtual" (mostrar_foto) que não existe no banco, só serve pra exibição — ele pega a URL da foto e monta uma tag <img> pequena.
+# Resumo do comportamento final
+# Situação	Ver lista	Editar/Excluir	Criar novo
+# Não logado	✅ Sim	❌ Bloqueado (redireciona pro login)	❌ Bloqueado
+# Logado	✅ Sim	✅ Sim	✅ Sim
