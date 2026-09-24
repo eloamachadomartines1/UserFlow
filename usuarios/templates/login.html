@@ -1,50 +1,11 @@
-<!DOCTYPE html>
-<html lang="pt-br">
+{% extends "base.html" %}
 
-<head>
-    <meta charset="UTF-8">
-    <title>Login</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 40px;
-        }
+{% block content %}
+<h1>Login</h1>
 
-        .form-group {
-            margin-bottom: 15px;
-        }
-
-        label {
-            display: block;
-            margin-bottom: 5px;
-            font-weight: bold;
-        }
-
-        input {
-            padding: 6px;
-            width: 250px;
-        }
-
-        button {
-            padding: 8px 16px;
-            background-color: #0096c7;
-            color: white;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-        }
-
-        .erro {
-            color: red;
-        }
-    </style>
-</head>
-
-<body>
-    <h1>Login</h1>
-
+<div class="card" style="max-width: 420px;">
     {% if form.errors %}
-     <p class="erro">Usuário ou senha inválidos.</p>
+        <div class="alerta">Usuário ou senha inválidos.</div>
     {% endif %}
 
     <form method="post">
@@ -57,10 +18,7 @@
             <label for="{{ form.password.id_for_label }}">Senha</label>
             {{ form.password }}
         </div>
-        <button type="submit">Entrar</button>
+        <button type="submit" class="btn btn-primary" style="width:100%;">Entrar</button>
     </form>
-
-    <p><a href="{% url 'listar_usuarios' %}">&larr; Voltar para a lista</a></p>
-</body>
-
-</html>
+</div>
+{% endblock %}
