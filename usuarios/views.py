@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from usuarios.models import Usuario
 from usuarios.forms import UsuarioModelForm
-# Create your views here.
+
 
 def listar_usuarios(request):
     usuarios = Usuario.objects.all()
