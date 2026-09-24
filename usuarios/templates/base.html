@@ -44,6 +44,23 @@
             max-width: 1000px;
             margin: 0 auto;
         }
+
+
+        .logout-btn {
+            background: none;
+            border: none;
+            color: #fff;
+            cursor: pointer;
+            font-size: inherit;
+            font-family: inherit;
+            padding: 0;
+            text-decoration: none;
+        }
+
+        .logout-btn:hover {
+            text-decoration: underline;
+        }
+    </style>
     </style>
 </head>
 
@@ -54,7 +71,9 @@
             <li><a href="{% url 'cadastro' %}">Cadastre-se</a></li>
             <li><a href="{% url 'login' %}">Login</a></li>
             {% endif %}
+
             <li><a href="{% url 'listar_usuarios' %}">Usuários</a></li>
+
             {% if user.is_authenticated %}
             <li>
                 <form method="post" action="{% url 'logout' %}" style="display: inline;">
