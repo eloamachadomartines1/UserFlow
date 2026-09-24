@@ -20,7 +20,7 @@ if __name__ == '__main__':
 
 
 
-# Ah entendi, minha confusão — obrigado por corrigir! Então nesse projeto novo (o CRUD de usuários) não existe nada de login/cadastro ainda. Vamos criar isso do zero, certinho.
+# Ah entendi, minha confusão  obrigado por corrigir! Então nesse projeto novo (o CRUD de usuários) não existe nada de login/cadastro ainda. Vamos criar isso do zero, certinho.
 
 # O que vamos usar
 
