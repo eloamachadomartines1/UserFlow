@@ -7,6 +7,7 @@ urlpatterns = [
     path('novo/', views.criar_usuario, name='criar_usuario'),
     path('editar/<int:pk>/', views.editar_usuario, name='editar_usuario'),
     path('excluir/<int:pk>/', views.excluir_usuario, name='excluir_usuario'),
+    path('restaurar/<int:pk>/', views.restaurar_usuario, name='restaurar_usuario'),
 
     path('cadastro/', views.cadastro_view, name='cadastro'),
     path('login/', auth_views.LoginView.as_view(template_name='login.html'), name='login'),

@@ -19,6 +19,7 @@ class Usuario(models.Model):
     idade = models.IntegerField(blank=True, null=True)
     sexo = models.CharField(max_length=1, choices=SEXO_CHOICES)
     foto = models.ImageField(upload_to='usuario/', blank=True, null=True)
+    ativo = models.BooleanField(default=True)
 
     def __str__(self):
         return self.nome
