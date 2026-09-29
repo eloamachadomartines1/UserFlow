@@ -66,9 +66,24 @@ Sistema de CRUD (Criar, Listar, Editar, Excluir) de usuários desenvolvido em Dj
 
 http://127.0.0.1:8000/usuarios/
 
+## Painel administrativo (Django Admin)
+
+O projeto conta com o painel administrativo nativo do Django, útil para gerenciar usuários diretamente pelo banco de dados sem passar pela interface do site.
+
+**Acesso:**
+
+http://127.0.0.1:8000/admin/
+
+
+Para acessar, é necessário ter um superusuário criado. Caso ainda não tenha um, rode:
+```bash
+python manage.py createsuperuser
+```
+E siga as instruções no terminal (usuário, e-mail opcional, senha).
 
 ## Estrutura do projeto
 
+```
 UserFlow/
 ├── app/ # Configurações principais do projeto (settings, urls)
 ├── usuarios/ # App principal: models, views, forms, templates
@@ -83,7 +98,7 @@ UserFlow/
 ├── media/ # Fotos de perfil enviadas pelos usuários
 ├── requirements.txt
 └── manage.py
-
+```
 
 ## Modelo de dados (Usuario)
 
