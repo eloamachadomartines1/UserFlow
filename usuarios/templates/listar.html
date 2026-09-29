@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load usuario_filters %}
 
 {% block content %}
 <div class="topo-acoes">
@@ -37,7 +38,7 @@
                     {% endif %}
                 </td>
                 <td>{{ usuario.nome }}</td>
-                <td>{{ usuario.cpf }}</td>
+                <td>{{ usuario.cpf|formatar_cpf }}</td>
                 <td>{{ usuario.data_nascimento|date:"d/m/Y" }}</td>
                 <td>{{ usuario.get_sexo_display }}</td>
                 {% if user.is_authenticated %}

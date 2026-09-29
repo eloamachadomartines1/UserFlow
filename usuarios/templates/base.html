@@ -681,14 +681,21 @@
         });
 
         document.querySelectorAll('input[name="cpf"]').forEach((input) => {
-            input.addEventListener('input', () =>{
-                let valor = input.valor.repalce(/\D/g, '').splice(0,11);
-                valor = valor.replace(/(\d{3})(\d)/, '$1.$2');
-                valor = valor.replace(/(\d{3})(\d)/, '$1.$2');
-                valor = valor.replace(/(\d{3})(\d{1,2})$/, '$1-$2');
-                input.value = valor;
-            })
-        })
+            input.addEventListener('input', () => {
+                let numeros = input.value.replace(/\D/g, '').slice(0, 11);
+                let formatado = numeros;
+
+                if (numeros.length > 9) {
+                    formatado = numeros.replace(/(\d{3})(\d{3})(\d{3})(\d{1,2})/, '$1.$2.$3-$4');
+                } else if (numeros.length > 6) {
+                    formatado = numeros.replace(/(\d{3})(\d{3})(\d{1,3})/, '$1.$2.$3');
+                } else if (numeros.length > 3) {
+                    formatado = numeros.replace(/(\d{3})(\d{1,3})/, '$1.$2');
+                }
+
+                input.value = formatado;
+            });
+        });
     </script>
 
 </body>
