@@ -113,5 +113,3 @@ UserFlow/
 ### Tema claro
 ![Tema claro](docs/screenshots/tema-claro.png)
 
-### Tema escuro
-![Tema escuro](docs/screenshots/tema-escuro.png)
