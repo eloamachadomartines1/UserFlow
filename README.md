@@ -8,7 +8,7 @@ Sistema de CRUD (Criar, Listar, Editar, Excluir) de usuários desenvolvido em Dj
 - Listagem de usuários com foto, nome, CPF, data de nascimento e sexo
 - Máscara automática de CPF (formato `000.000.000-00`) com validação de 11 dígitos
 - Upload de foto de perfil, exibida como avatar circular
-- Edição e exclusão de usuários (somente para usuários autenticados)
+- Edição e exclusão de usuários (requer login)
 - Exclusão reversível: ao excluir, uma mensagem permite desfazer a ação
 - Alternância entre tema claro e escuro, com preferência salva no navegador
 - Visualização de usuários cadastrados liberada mesmo sem login (somente leitura)
