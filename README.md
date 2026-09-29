@@ -31,7 +31,7 @@ Sistema de CRUD (Criar, Listar, Editar, Excluir) de usuários desenvolvido em Dj
 
 1. Clone o repositório:
 ```bash
-   git clone <url-do-repositorio>
+   git clone https://github.com/eloamachadomartines1/UserFlow.git
    cd UserFlow
 ```
 
@@ -96,7 +96,7 @@ UserFlow/
 | foto | Imagem | Foto de perfil (opcional) |
 | ativo | Booleano | Controla exclusão reversível (soft delete) |
 
-## Capturas de tela
+## Prévia do sistema
 
 ### Tela de login
 ![Login](docs/screenshots/login.png)
@@ -104,8 +104,14 @@ UserFlow/
 ### Tela de cadastro
 ![Cadastro](docs/screenshots/cadastro.png)
 
-### Listagem de usuários
-![Listagem](docs/screenshots/listagem.png)
+### Listagem de usuários (deslogado)
+![Listagem deslogado](docs/screenshots/listagem-deslogado.png)
 
-### Modo escuro
-![Modo escuro](docs/screenshots/modo-escuro.png)
+### Listagem de usuários (logado)
+![Listagem logado](docs/screenshots/listagem-logado.png)
+
+### Tema claro
+![Tema claro](docs/screenshots/tema-claro.png)
+
+### Tema escuro
+![Tema escuro](docs/screenshots/tema-escuro.png)
