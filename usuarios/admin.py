@@ -3,4 +3,4 @@ from usuarios.models import Usuario
 
 @admin.register(Usuario)
 class UsuarioAdmin(admin.ModelAdmin):
-    list_display = ['nome', 'cpf', 'idade', 'sexo']
+    list_display = ['nome', 'cpf', 'data_nascimento', 'sexo']

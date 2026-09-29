@@ -489,6 +489,32 @@
             gap: 10px;
             justify-content: flex-end;
         }
+
+        .campo-senha {
+            position: relative;
+        }
+
+        .campo-senha input {
+            padding-right: 44px;
+        }
+
+        .toggle-senha {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: var(--text-soft);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            padding: 4px;
+        }
+
+        .toggle-senha:hover {
+            color: var(--text);
+        }
     </style>
 </head>
 
@@ -635,6 +661,34 @@
                 }
             });
         }
+        document.querySelectorAll('.toggle-senha').forEach((botao) => {
+            botao.addEventListener('click', () => {
+                const idAlvo = botao.getAttribute('data-alvo');
+                const input = document.getElementById(idAlvo);
+                const iconOpen = botao.querySelector('.icon-eye-open');
+                const iconClosed = botao.querySelector('.icon-eye-closed');
+
+                if (input.type === 'password') {
+                    input.type = 'text';
+                    iconOpen.style.display = 'none';
+                    iconClosed.style.display = 'block';
+                } else {
+                    input.type = 'password';
+                    iconOpen.style.display = 'block';
+                    iconClosed.style.display = 'none';
+                }
+            });
+        });
+
+        document.querySelectorAll('input[name="cpf"]').forEach((input) => {
+            input.addEventListener('input', () =>{
+                let valor = input.valor.repalce(/\D/g, '').splice(0,11);
+                valor = valor.replace(/(\d{3})(\d)/, '$1.$2');
+                valor = valor.replace(/(\d{3})(\d)/, '$1.$2');
+                valor = valor.replace(/(\d{3})(\d{1,2})$/, '$1-$2');
+                input.value = valor;
+            })
+        })
     </script>
 
 </body>

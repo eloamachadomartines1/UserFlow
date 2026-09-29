@@ -16,7 +16,7 @@ class Usuario(models.Model):
     id = models.AutoField(primary_key=True)
     nome = models.CharField(max_length=100)
     cpf = models.CharField(max_length=11, unique=True, validators=[cpf_validator])
-    idade = models.IntegerField(blank=True, null=True)
+    data_nascimento = models.DateField()
     sexo = models.CharField(max_length=1, choices=SEXO_CHOICES)
     foto = models.ImageField(upload_to='usuario/', blank=True, null=True)
     ativo = models.BooleanField(default=True)

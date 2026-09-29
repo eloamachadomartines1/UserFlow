@@ -21,7 +21,7 @@
                 <th></th>
                 <th>Nome</th>
                 <th>CPF</th>
-                <th>Idade</th>
+                <th>Nascimento</th>
                 <th>Sexo</th>
                 {% if user.is_authenticated %}<th></th>{% endif %}
             </tr>
@@ -38,7 +38,7 @@
                 </td>
                 <td>{{ usuario.nome }}</td>
                 <td>{{ usuario.cpf }}</td>
-                <td>{{ usuario.idade|default:"-" }}</td>
+                <td>{{ usuario.data_nascimento|date:"d/m/Y" }}</td>
                 <td>{{ usuario.get_sexo_display }}</td>
                 {% if user.is_authenticated %}
                 <td style="text-align:right; white-space: nowrap;">
