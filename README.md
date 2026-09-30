@@ -2,6 +2,17 @@
 
 Sistema de CRUD (Criar, Listar, Editar, Excluir) de usuários desenvolvido em Django, com autenticação, tema claro/escuro e upload de foto de perfil.
 
+## Sumário
+
+- [Funcionalidades](#funcionalidades)
+- [Tecnologias usadas](#tecnologias-usadas)
+- [Como rodar o projeto localmente](#como-rodar-o-projeto-localmente)
+- [Painel administrativo (Django Admin)](#painel-administrativo-django-admin)
+- [Testes](#testes)
+- [Estrutura do projeto](#estrutura-do-projeto)
+- [Modelo de dados](#modelo-de-dados-usuario)
+- [Prévia dos sistema](#prévia-do-sistema)
+
 ## Funcionalidades
 
 - Cadastro e login de contas (usando o sistema de autenticação nativo do Django)
@@ -72,15 +83,28 @@ http://127.0.0.1:8000/usuarios/
 O projeto conta com o painel administrativo nativo do Django, útil para gerenciar usuários diretamente pelo banco de dados sem passar pela interface do site.
 
 **Acesso:**
-
+```bash
 http://127.0.0.1:8000/admin/
-
+```
 
 Para acessar, é necessário ter um superusuário criado. Caso ainda não tenha um, rode:
 ```bash
 python manage.py createsuperuser
 ```
 E siga as instruções no terminal (usuário, e-mail opcional, senha).
+
+## Testes
+
+O projeto conta com testes automatizados cobrindo as principais regras de negócio:
+
+- Validação de CPF (rejeita CPFs incompletos, aceita CPFs com 11 dígitos)
+- Restrição de acesso: usuários não autenticados não conseguem acessar a criação de novos registros
+- Exclusão reversível (soft delete): confirma que a exclusão marca o usuário como inativo, sem removê-lo do banco
+
+Para rodar os testes:
+```bash
+python manage.py test usuarios
+```
 
 ## Estrutura do projeto
 
