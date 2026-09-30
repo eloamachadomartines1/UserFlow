@@ -63,8 +63,9 @@ Sistema de CRUD (Criar, Listar, Editar, Excluir) de usuários desenvolvido em Dj
 ```
 
 7. Acesse no navegador:
-
+```bash
 http://127.0.0.1:8000/usuarios/
+```
 
 ## Painel administrativo (Django Admin)
 
