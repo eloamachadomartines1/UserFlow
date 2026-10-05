@@ -56,7 +56,7 @@ O banco de dados fica armazenado no arquivo:
     db.sqlite3
 ```
 
-Os usuários cadastrados localmente sção utilizados para testes e desenvolvimento.
+Os usuários cadastrados localmente são utilizados para testes e desenvolvimento.
 
 ### Ambiente de produção
 
