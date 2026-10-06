@@ -37,7 +37,7 @@
 
             <tr>
 
-                <td>
+                <td class="td-avatar">
 
                     {% if usuario.foto %}
 
@@ -54,23 +54,23 @@
 
                 </td>
 
-                <td>
+                <td data-label="Nome">
                     {{ usuario.nome }}
                 </td>
 
-                <td>
+                <td data-label="CPF">
                     {{ usuario.cpf|formatar_cpf }}
                 </td>
 
-                <td>
+                <td data-label="Nascimento">
                     {{ usuario.data_nascimento|date:"d/m/Y" }}
                 </td>
 
-                <td>
+                <td data-label="Sexo">
                     {{ usuario.get_sexo_display }}
                 </td>
 
-                <td style="text-align:right; white-space: nowrap;">
+                <td class="td-acoes" style="text-align:right; white-space: nowrap;">
 
                     <a href="{% url 'editar_usuario' usuario.pk %}"
                        class="btn btn-warning btn-sm">

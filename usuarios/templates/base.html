@@ -70,7 +70,6 @@
         }
 
         /* NAVBAR */
-        /* NAVBAR */
         nav {
             background-color: var(--primary);
             border-bottom: none;
@@ -82,6 +81,7 @@
             position: sticky;
             top: 0;
             z-index: 10;
+            flex-wrap: wrap;
         }
 
         .nav-brand {
@@ -95,6 +95,7 @@
             list-style: none;
             display: flex;
             align-items: center;
+            flex-wrap: wrap;
             gap: 12px;
             margin: 0;
             padding: 0;
@@ -131,11 +132,11 @@
         .user-chip {
             font-size: 0.88rem;
             color: rgba(255, 255, 255, 0.85);
-            /* background-color: rgba(255, 255, 255, 0.1); */
             padding: 8px 14px;
             border-radius: 8px;
             display: inline-flex;
             align-items: center;
+            white-space: nowrap;
         }
 
         /* LAYOUT */
@@ -353,6 +354,8 @@
             justify-content: space-between;
             align-items: center;
             margin-bottom: 24px;
+            gap: 12px;
+            flex-wrap: wrap;
         }
 
         .vazio {
@@ -404,6 +407,7 @@
             align-items: center;
             justify-content: center;
             transition: background-color 0.15s ease;
+            flex-shrink: 0;
         }
 
         .theme-btn:hover {
@@ -419,7 +423,8 @@
             display: flex;
             flex-direction: column;
             gap: 10px;
-
+            width: calc(100% - 32px);
+            max-width: 420px;
         }
 
         .toast {
@@ -432,7 +437,7 @@
             display: flex;
             align-items: center;
             gap: 14px;
-
+            flex-wrap: wrap;
         }
 
         .toast .link-desfazer {
@@ -440,12 +445,10 @@
             font-weight: 700;
             text-decoration: none;
             white-space: nowrap;
-
         }
 
         .toast .link-desfazer:hover {
             text-decoration: underline;
-
         }
 
         .modal-overlay {
@@ -456,6 +459,7 @@
             z-index: 50;
             align-items: center;
             justify-content: center;
+            padding: 16px;
         }
 
         .modal-overlay.ativo {
@@ -468,7 +472,7 @@
             box-shadow: var(--shadow);
             padding: 28px;
             max-width: 360px;
-            width: 90%;
+            width: 100%;
         }
 
         .modal-box h3 {
@@ -488,6 +492,7 @@
             display: flex;
             gap: 10px;
             justify-content: flex-end;
+            flex-wrap: wrap;
         }
 
         .campo-senha {
@@ -514,6 +519,154 @@
 
         .toggle-senha:hover {
             color: var(--text);
+        }
+
+        /* ============ RESPONSIVO ============ */
+
+        @media (max-width: 768px) {
+            nav {
+                height: auto;
+                min-height: 64px;
+                padding: 12px 16px;
+                row-gap: 10px;
+            }
+
+            nav ul {
+                justify-content: flex-end;
+                flex: 1;
+            }
+
+            main {
+                padding: 24px 16px;
+            }
+
+            h1 {
+                font-size: 1.4rem;
+                margin-bottom: 18px;
+            }
+
+            .card {
+                padding: 18px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .nav-brand {
+                font-size: 1rem;
+            }
+
+            nav ul {
+                justify-content: center;
+                width: 100%;
+                gap: 8px;
+            }
+
+            nav ul li a {
+                padding: 7px 10px;
+                font-size: 0.85rem;
+            }
+
+            .user-chip {
+                font-size: 0.8rem;
+                padding: 6px 10px;
+            }
+
+            .topo-acoes {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .topo-acoes .btn {
+                justify-content: center;
+            }
+
+            .avatar,
+            .avatar-vazio {
+                width: 56px;
+                height: 56px;
+                font-size: 0.95rem;
+            }
+
+            .modal-box {
+                padding: 20px;
+            }
+        }
+
+        /* Tabela vira "cartões" empilhados em telas pequenas */
+        @media (max-width: 640px) {
+
+            table,
+            thead,
+            tbody,
+            tr,
+            th,
+            td {
+                display: block;
+                width: 100%;
+            }
+
+            thead {
+                position: absolute;
+                width: 1px;
+                height: 1px;
+                overflow: hidden;
+                clip: rect(0 0 0 0);
+            }
+
+            tbody tr {
+                margin-bottom: 14px;
+                border: 1px solid var(--border);
+                border-radius: var(--radius);
+                overflow: hidden;
+            }
+
+            tbody tr:last-child {
+                margin-bottom: 0;
+            }
+
+            tbody td {
+                border-top: none;
+                border-bottom: 1px solid var(--border);
+                padding: 10px 16px 10px 46%;
+                position: relative;
+                text-align: right;
+                font-size: 0.9rem;
+                min-height: 20px;
+            }
+
+            tbody td:last-child {
+                border-bottom: none;
+            }
+
+            tbody td[data-label]::before {
+                content: attr(data-label);
+                position: absolute;
+                left: 16px;
+                top: 10px;
+                width: 40%;
+                text-align: left;
+                font-size: 0.7rem;
+                font-weight: 700;
+                text-transform: uppercase;
+                letter-spacing: 0.03em;
+                color: var(--text-soft);
+            }
+
+            tbody td.td-avatar,
+            tbody td.td-acoes {
+                text-align: left;
+                padding: 12px 16px;
+            }
+
+            tbody td.td-acoes {
+                display: flex;
+                gap: 8px;
+            }
+
+            tbody td.td-acoes a.btn {
+                flex: 1;
+                justify-content: center;
+            }
         }
     </style>
 </head>
@@ -554,7 +707,6 @@
             </li>
 
             {% if user.is_authenticated %}
-            
             <li><a href="{% url 'listar_usuarios' %}"
                     class="{% if request.resolver_match.url_name == 'listar_usuarios' %}destaque{% endif %}">Usuários</a>
             </li>
