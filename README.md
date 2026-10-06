@@ -270,7 +270,8 @@ UserFlow/
     └── .env
 ```
 > O arquivo `.env` contém informações sensíveis e não deve ser enviado para o repositório público.
-## Modelo de dados (Usuario)
+
+## Modelo de dados (Usuário)
 
 | Campo | Tipo | Descrição |
 |---|---|---|
