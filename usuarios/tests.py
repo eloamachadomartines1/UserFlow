@@ -33,6 +33,22 @@ class UsuarioFormTest(TestCase):
 
 class UsuarioViewTest(TestCase):
 
+    def test_raiz_redireciona_para_login(self):
+        response = self.client.get('/')
+        self.assertRedirects(response, '/usuarios/login/')
+
+    def test_usuario_deslogado_não_acessa_listagem(self):
+        response = self.client.get('/usuarios/')  
+        self.assertRedirects(response, '/usuarios/login/?next=/usuarios/')
+
+    def test_usuario_logado_acessa_listagem(self):
+        User.objects.create_user(username='testeuser', password='senha123')
+        self.client.login(username='testeuser', password='senha123')
+
+        response = self.client.get('/usuarios/')
+
+        self.assertEqual(response.status_code, 200)
+
     def test_usuario_deslogado_nao_acessa_criar(self):
         response = self.client.get('/usuarios/novo/')
         self.assertEqual(response.status_code, 302)
@@ -41,7 +57,7 @@ class UsuarioViewTest(TestCase):
     def test_exclusao_faz_soft_delete(self):
         #Cria uma conta de login para simular um usuario autenticado
         User.objects.create_user(username='testeuser', password='senha123')
-        self.client.login(username='testuser', password='senha123')
+        self.client.login(username='testeuser', password='senha123')
 
         usuario = Usuario.objects.create(
             nome='Eloá M.',

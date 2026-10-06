@@ -21,7 +21,7 @@ def cadastro_view(request):
     return render(request, 'cadastro.html', { 'form' : form })
 
 
-
+@login_required
 def listar_usuarios(request):
     usuarios = Usuario.objects.filter(ativo=True)
     return render(request, 'listar.html', {'usuarios': usuarios})
