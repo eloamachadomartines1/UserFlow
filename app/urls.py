@@ -22,7 +22,7 @@ from django.conf.urls.static import static
  
 # "include serve para puxar a url de outro arquivo"
 urlpatterns = [
-    path('', RedirectView.as_view(pattern_name='login', permanent=False)),
+    path('', RedirectView.as_view(pattern_name='cadastro', permanent=False)),
     path('admin/', admin.site.urls),
     path('usuarios/', include('usuarios.urls')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
