@@ -290,17 +290,16 @@ UserFlow/
 ## Prévia do sistema
 
 ### Tela de login
-![Login](docs/screenshots/login.png)
+![Login](docs/screenshots/login1.png)
 
 ### Tela de cadastro
-![Cadastro](docs/screenshots/cadastro.png)
+![Cadastro](docs/screenshots/cadastro1.png)
 
-### Listagem de usuários (deslogado)
-![Listagem deslogado](docs/screenshots/listagem-deslogado.png)
+### Listagem de usuários (tema escuro)
+![Listagem deslogado](docs/screenshots/listagem-escuro.png)
 
-### Listagem de usuários (logado)
-![Listagem logado](docs/screenshots/listagem-logado.png)
+### Listagem de usuários (tema claro)
+![Listagem deslogado](docs/screenshots/listagem-claro.png)
 
-### Tema claro
-![Tema claro](docs/screenshots/tema-claro.png)
+
 
