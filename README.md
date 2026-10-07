@@ -21,12 +21,16 @@ Sistema de CRUD (Criar, Listar, Editar, Excluir) de usuários desenvolvido em Dj
 - Cadastro e login de contas (usando o sistema de autenticação nativo do Django)
 - Listagem de usuários com foto, nome, CPF, data de nascimento e sexo
 - Máscara automática de CPF (formato `000.000.000-00`) com validação de 11 dígitos
+- Busca de usuário por nome, CPF e data de nascimento
+- Máscaras automáticas para CPF e data de nascimento
 - Upload de foto de perfil, exibida como avatar circular
 - Armazenamento das fotos de perfil utilzando Cloudinary
 - Edição e exclusão de usuários (requer login)
 - Exclusão reversível: ao excluir, uma mensagem permite desfazer a ação
+- Paginação com 8 usuários por página
+- NAvegação entre as páginas mantendo os filtros de busca
 - Alternância entre tema claro e escuro, com preferência salva no navegador
-- Visualização de usuários cadastrados liberada mesmo sem login (somente leitura)
+- Proteção das funções de criação, edição e exclusão por autenticação
 
 ## Tecnologias usadas
 
@@ -148,6 +152,13 @@ python manage.py createsuperuser
 ```
 E siga as instruções no terminal (usuário, e-mail opcional, senha).
 
+### Acesso em produção
+
+No ambiente do Render, também é possível criar um superusuário utilizando o Shell do serviço:
+```bash
+    python manage.py createsuperuser
+```
+
 ## Variáveis de ambiente
 
 O projeto utiliza variáveis de ambiente para armazenar configurações importantes e informações que não devem ficar diretamente no código.
@@ -164,16 +175,9 @@ As principais variáveis são:
 | `CLOUDINARY_API_KEY` | Chave da API do Cloudinary |
 | `CLOUDINARY_API_SECRET` | Chave secreta da API do Cloudinary |
 
-O arquivo `.env` nao deve ser enviado para o GitHub.
+> O arquivo `.env` nao deve ser enviado para o GitHub.
 
 As chaves reais do Cloudinary também não devem ser colocadas diretamente no código ou no README.
-
-### Acesso em produção
-
-No ambiente do Render, também é possível criar um superusuário utilizando o Shell do serviço:
-```bash
-    python manage.py createsuperuser
-```
 
 ## Testes
 
