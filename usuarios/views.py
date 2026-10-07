@@ -1,14 +1,17 @@
+import re 
+from datetime import datetime
+
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import UserCreationForm
-from usuarios.models import Usuario
-from usuarios.forms import UsuarioModelForm
 from django.contrib import messages
 from django.utils.html import format_html
 from django.urls import reverse
+from django.db.models import Q
+from django.core.paginator import Paginator
 
-
-
+from usuarios.models import Usuario
+from usuarios.forms import UsuarioModelForm
 
 def cadastro_view(request):
     if request.method == 'POST':
@@ -23,8 +26,40 @@ def cadastro_view(request):
 
 @login_required
 def listar_usuarios(request):
-    usuarios = Usuario.objects.filter(ativo=True)
-    return render(request, 'listar.html', {'usuarios': usuarios})
+    usuarios = Usuario.objects.filter(ativo=True).order_by('nome')
+
+    termo = request.GET.get('q', '').strip()
+
+    if termo:
+        filtro = Q(nome__icontains=termo)
+
+        #vai buscar pelo cpf mesmo diditando comm pontos
+        cpf_numeros = re.sub(r'\D', '', termo)
+        if cpf_numeros:
+            filtro |= Q(cpf__icontains=cpf_numeros)
+
+        #tanta ler o termo com dat dd/mm/aaaa
+        data_convertida = None
+        for formato in ('%d/%m/%Y', '%d-%m-%Y', '%Y-%m-%d'):
+            try: 
+                data_convertida = datetime.strftime(termo, formato).date()
+                break
+            except ValueError:
+                continue
+        if data_convertida:
+            filtro |= Q(data_nascimento=data_convertida)   
+
+        usuarios = usuarios.filter(filtro)   
+
+    paginator = Paginator(usuarios, 8)
+    numero_pagina = request.GET.get('page')
+    pagina = paginator.get_page(numero_pagina) 
+
+    return render(request, 'listar.html', {
+        'usuarios': pagina,
+        'termo_busca': termo,
+    })     
+
 
 @login_required
 def criar_usuario(request):
