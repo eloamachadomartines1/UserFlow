@@ -1,4 +1,4 @@
-import re 
+import re
 from datetime import datetime
 
 from django.shortcuts import render, redirect, get_object_or_404
@@ -13,6 +13,7 @@ from django.core.paginator import Paginator
 from usuarios.models import Usuario
 from usuarios.forms import UsuarioModelForm
 
+
 def cadastro_view(request):
     if request.method == 'POST':
         form = UserCreationForm(request.POST)
@@ -21,7 +22,7 @@ def cadastro_view(request):
             return redirect('login')
     else:
         form = UserCreationForm()
-    return render(request, 'cadastro.html', { 'form' : form })
+    return render(request, 'cadastro.html', {'form': form})
 
 
 @login_required
@@ -33,32 +34,32 @@ def listar_usuarios(request):
     if termo:
         filtro = Q(nome__icontains=termo)
 
-        #vai buscar pelo cpf mesmo diditando comm pontos
+        # Permite buscar pelo CPF mesmo digitado com pontos/traço
         cpf_numeros = re.sub(r'\D', '', termo)
         if cpf_numeros:
             filtro |= Q(cpf__icontains=cpf_numeros)
 
-        #tanta ler o termo com dat dd/mm/aaaa
+        # Tenta interpretar o termo como data (dd/mm/aaaa)
         data_convertida = None
         for formato in ('%d/%m/%Y', '%d-%m-%Y', '%Y-%m-%d'):
-            try: 
-                data_convertida = datetime.strftime(termo, formato).date()
+            try:
+                data_convertida = datetime.strptime(termo, formato).date()
                 break
             except ValueError:
                 continue
         if data_convertida:
-            filtro |= Q(data_nascimento=data_convertida)   
+            filtro |= Q(data_nascimento=data_convertida)
 
-        usuarios = usuarios.filter(filtro)   
+        usuarios = usuarios.filter(filtro)
 
     paginator = Paginator(usuarios, 8)
     numero_pagina = request.GET.get('page')
-    pagina = paginator.get_page(numero_pagina) 
+    pagina = paginator.get_page(numero_pagina)
 
     return render(request, 'listar.html', {
         'usuarios': pagina,
         'termo_busca': termo,
-    })     
+    })
 
 
 @login_required
@@ -68,11 +69,10 @@ def criar_usuario(request):
 
         if form.is_valid():
             form.save()
-            return redirect('listar_usuarios') 
-    # se nao validar vai voltar tudo do começo
+            return redirect('listar_usuarios')
     else:
-        form = UsuarioModelForm()  
-    return render(request, 'form.html', {'form': form })  
+        form = UsuarioModelForm()
+    return render(request, 'form.html', {'form': form})
 
 
 @login_required
@@ -84,10 +84,9 @@ def editar_usuario(request, pk):
         if form.is_valid():
             form.save()
             return redirect('listar_usuarios')
-
     else:
         form = UsuarioModelForm(instance=usuario)
-    return render( request, 'form.html', { 'form': form })
+    return render(request, 'form.html', {'form': form})
 
 
 @login_required
@@ -105,10 +104,11 @@ def excluir_usuario(request, pk):
         return redirect('listar_usuarios')
     return render(request, 'confirmar_exclusao.html', {'usuario': usuario})
 
+
 @login_required
 def restaurar_usuario(request, pk):
-     usuario = get_object_or_404(Usuario, pk=pk)
-     usuario.ativo = True
-     usuario.save()
-     messages.success(request, format_html('Usuário <strong>{}</strong> restaurado.', usuario.nome))
-     return redirect('listar_usuarios')
+    usuario = get_object_or_404(Usuario, pk=pk)
+    usuario.ativo = True
+    usuario.save()
+    messages.success(request, format_html('Usuário <strong>{}</strong> restaurado.', usuario.nome))
+    return redirect('listar_usuarios')
