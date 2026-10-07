@@ -7,7 +7,6 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib import messages
 from django.utils.html import format_html
 from django.urls import reverse
-from django.db.models import Q
 from django.core.paginator import Paginator
 
 from usuarios.models import Usuario
@@ -30,27 +29,35 @@ def listar_usuarios(request):
     usuarios = Usuario.objects.filter(ativo=True).order_by('nome')
 
     termo = request.GET.get('q', '').strip()
+    tipo = request.GET.get('tipo', 'nome')
+    if tipo not in ('nome', 'cpf', 'data'):
+        tipo = 'nome'
 
     if termo:
-        filtro = Q(nome__icontains=termo)
+        if tipo == 'cpf':
+            # Aceita com ou sem pontos/traço: só os números importam
+            cpf_numeros = re.sub(r'\D', '', termo)
+            if cpf_numeros:
+                usuarios = usuarios.filter(cpf__icontains=cpf_numeros)
+            else:
+                usuarios = usuarios.none()
 
-        # Permite buscar pelo CPF mesmo digitado com pontos/traço
-        cpf_numeros = re.sub(r'\D', '', termo)
-        if cpf_numeros:
-            filtro |= Q(cpf__icontains=cpf_numeros)
+        elif tipo == 'data':
+            data_convertida = None
+            for formato in ('%d/%m/%Y', '%d-%m-%Y', '%Y-%m-%d'):
+                try:
+                    data_convertida = datetime.strptime(termo, formato).date()
+                    break
+                except ValueError:
+                    continue
 
-        # Tenta interpretar o termo como data (dd/mm/aaaa)
-        data_convertida = None
-        for formato in ('%d/%m/%Y', '%d-%m-%Y', '%Y-%m-%d'):
-            try:
-                data_convertida = datetime.strptime(termo, formato).date()
-                break
-            except ValueError:
-                continue
-        if data_convertida:
-            filtro |= Q(data_nascimento=data_convertida)
+            if data_convertida:
+                usuarios = usuarios.filter(data_nascimento=data_convertida)
+            else:
+                usuarios = usuarios.none()
 
-        usuarios = usuarios.filter(filtro)
+        else:
+            usuarios = usuarios.filter(nome__icontains=termo)
 
     paginator = Paginator(usuarios, 8)
     numero_pagina = request.GET.get('page')
@@ -59,6 +66,7 @@ def listar_usuarios(request):
     return render(request, 'listar.html', {
         'usuarios': pagina,
         'termo_busca': termo,
+        'tipo_busca': tipo,
     })
 
 
