@@ -21,14 +21,13 @@ Sistema de CRUD (Criar, Listar, Editar, Excluir) de usuários desenvolvido em Dj
 - Cadastro e login de contas (usando o sistema de autenticação nativo do Django)
 - Listagem de usuários com foto, nome, CPF, data de nascimento e sexo
 - Máscara automática de CPF (formato `000.000.000-00`) com validação de 11 dígitos
-- Busca de usuário por nome, CPF e data de nascimento
-- Máscaras automáticas para CPF e data de nascimento
+- Busca de usuário por nome, CPF e data de nascimento com máscara automática
 - Upload de foto de perfil, exibida como avatar circular
-- Armazenamento das fotos de perfil utilzando Cloudinary
+- Armazenamento das fotos de perfil utilizando Cloudinary
 - Edição e exclusão de usuários (requer login)
 - Exclusão reversível: ao excluir, uma mensagem permite desfazer a ação
 - Paginação com 8 usuários por página
-- NAvegação entre as páginas mantendo os filtros de busca
+- Navegação entre as páginas mantendo os filtros de busca
 - Alternância entre tema claro e escuro, com preferência salva no navegador
 - Proteção das funções de criação, edição e exclusão por autenticação
 
