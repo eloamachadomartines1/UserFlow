@@ -177,21 +177,20 @@
         const seletorTipo = document.getElementById('busca-tipo');
         const campoBusca = document.getElementById('busca-q');
 
-        // CPF: só números, ponto e traço. Máx. 11 dígitos e 14 caracteres no total.
-        function limitarCpf(valor) {
-            const permitido = valor.replace(/[^\d.\-]/g, '');
-            let resultado = '';
-            let digitos = 0;
+        // CPF: coloca os pontos e o traço sozinho (000.000.000-00)
+        function mascararCpf(valor) {
+            const numeros = valor.replace(/\D/g, '').slice(0, 11);
 
-            for (const caractere of permitido) {
-                if (/\d/.test(caractere)) {
-                    if (digitos >= 11) continue;
-                    digitos++;
-                }
-                if (resultado.length >= 14) break;
-                resultado += caractere;
+            if (numeros.length > 9) {
+                return numeros.replace(/(\d{3})(\d{3})(\d{3})(\d{1,2})/, '$1.$2.$3-$4');
             }
-            return resultado;
+            if (numeros.length > 6) {
+                return numeros.replace(/(\d{3})(\d{3})(\d{1,3})/, '$1.$2.$3');
+            }
+            if (numeros.length > 3) {
+                return numeros.replace(/(\d{3})(\d{1,3})/, '$1.$2');
+            }
+            return numeros;
         }
 
         // Data: coloca as barras sozinho (dd/mm/aaaa)
@@ -209,7 +208,7 @@
 
         function configurarCampo() {
             if (seletorTipo.value === 'cpf') {
-                campoBusca.placeholder = 'Somente números ou 000.000.000-00';
+                campoBusca.placeholder = '000.000.000-00';
                 campoBusca.maxLength = 14;
                 campoBusca.inputMode = 'numeric';
             } else if (seletorTipo.value === 'data') {
@@ -225,7 +224,7 @@
 
         function formatarCampo() {
             if (seletorTipo.value === 'cpf') {
-                campoBusca.value = limitarCpf(campoBusca.value);
+                campoBusca.value = mascararCpf(campoBusca.value);
             } else if (seletorTipo.value === 'data') {
                 campoBusca.value = mascararData(campoBusca.value);
             }
